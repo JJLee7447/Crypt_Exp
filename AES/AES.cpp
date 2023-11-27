@@ -217,8 +217,8 @@ void AES::EnKeyExpansion(Vec_Matrix &key_16byte){
         en_sub_xor_key(w0, w1, w2, w3, i);
     }  
 }
-//inv key expansion
-void AES::InvKeyExpansion(Vec_Matrix &key_16byte){
+//De key expansion
+void AES::DeKeyExpansion(Vec_Matrix &key_16byte){
     //
     Vec w0,w1,w2,w3;
     for(int i = 0; i < 4; i++){
@@ -394,7 +394,7 @@ void AES::byteDecrypt(Cvec &cipher_text, Vec &plain_text, Cvec &key){
 
     Vec_Matrix key_16byte = byte16_to_4_4_mat(key);
 
-    InvKeyExpansion(key_16byte);
+    DeKeyExpansion(key_16byte);
 
     InvCipher(cipher_text_16byte);
     plain_text = Mat_4_4_to_16byte(cipher_text_16byte);
@@ -421,7 +421,7 @@ void AES::get_sub_key(Vec &key){
 }
 void AES::get_de_key(Vec &key) {
     Vec_Matrix key_16byte = byte16_to_4_4_mat(key);
-    InvKeyExpansion(key_16byte);
+    DeKeyExpansion(key_16byte);
     vector<Vec_Matrix> mat = de_round_key;
     for (int i = 0; i < mat.size(); i++)
     {
@@ -439,7 +439,7 @@ void AES::get_de_key(Vec &key) {
 
 
 //接口函数
-void AES::Encrypt(string& plain_text_in, vector<Vec>& cipher_text_out, string& key){
+void AES::Encrypt(string& plain_text_in, Vec_Matrix& cipher_text_out, string& key){
     //将明文分割为16字节的字符串
     vector<string> plain_text_vec = split_string(plain_text_in);
     int len = plain_text_vec.size();
@@ -457,7 +457,7 @@ void AES::Encrypt(string& plain_text_in, vector<Vec>& cipher_text_out, string& k
     cipher_text_out = cipher_text_vec;
 }
 
-void AES::Decrypt(vector<Vec>& cipher_text_in, string& plain_text_out, string& key){
+void AES::Decrypt(Vec_Matrix& cipher_text_in, string& plain_text_out, string& key){
     //将密钥转换为16字节的字符串
     Vec key_vec(string16_to_Byte16(key));
     //16字节的字符串数组 
@@ -481,4 +481,45 @@ void AES::Decrypt(vector<Vec>& cipher_text_in, string& plain_text_out, string& k
     //将明文数组拼接为字符串
     plain_text_out = join_string(plain_text_vec);
     
+}
+
+string AES::En(string &plain_text_in, string &key){
+    Vec_Matrix cipher_text_out;
+    Encrypt(plain_text_in, cipher_text_out, key);
+    string cipher_text = "";
+    for (int i = 0; i < cipher_text_out.size(); i++)
+    {
+        for (int j = 0; j < cipher_text_out[i].size(); j++)
+        {
+            cipher_text += cipher_text_out[i][j];
+        }
+    }
+    return cipher_text;
+}
+
+string AES::De(string &cipher_text_in, string &key){
+    // 将密文转换为16字节的字符串
+    vector<string> cipher_text_vec = split_string(cipher_text_in);
+    int len = cipher_text_vec.size();
+    // 初始化明文为 16*len 的0矩阵
+    vector<Vec> plain_text_vec(len, Vec(16, 0));
+    // 将密钥转换为16字节的字符串
+    Vec key_vec(string16_to_Byte16(key));
+    // 对每个16字节的字符串进行解密
+    for (int i = 0; i < cipher_text_vec.size(); i++)
+    {
+        Vec cipher_text(string16_to_Byte16(cipher_text_vec[i]));
+        byteDecrypt(cipher_text, plain_text_vec[i], key_vec);
+    }
+    // 将明文矩阵转换为字符串
+    string plain_text_out = "";
+    for (int i = 0; i < plain_text_vec.size(); i++)
+    {
+        for (int j = 0; j < plain_text_vec[i].size(); j++)
+        {
+            plain_text_out += plain_text_vec[i][j];
+        }
+    }
+    return plain_text_out;
+
 }
