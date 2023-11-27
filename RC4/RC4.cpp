@@ -22,6 +22,10 @@ void RC4::initial_S_table(std::vector<int> &S_table)
 
 void RC4::initial_K_table(std::vector<int> &Seed_key, std::vector<int> &K_table)
 {
+    if (Seed_key.size() > 256){
+        std::cout << "Seed_key size is too large" << std::endl;
+        exit(0);
+    }
     for (int i = 0; i < 256; i++)
     {
         K_table.push_back(Seed_key[i % Seed_key.size()]);
