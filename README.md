@@ -4,3 +4,4 @@
 - RSA
 - SHA256
 - Hill
+- RC4
