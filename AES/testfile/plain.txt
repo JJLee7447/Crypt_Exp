@@ -5,4 +5,6 @@
 路由主要包括3个主要的参数：目的IP地址和子网掩码、下一跳IP地址。
 目的IP地址就是路由要到达的目的主机或者目的网络的IP地址，子网掩码就是目的IP地址所对应的子网掩码。当目的IP地址和子网掩码全为0的时候，表示静态缺省路由（默认路由）。
 
-dajfklja;lkfjlaks
+dajfklja;lkfjlaks saf'dajfa;jfda;jfd'ajfkalsdjo
+
+哈哈哈
