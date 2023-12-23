@@ -108,7 +108,6 @@ std::vector<int> RC4::Decrypt(std::vector<int> &Seed_key,std::vector<int> &ciphe
     return plaintext;
 }
 
-
 void RC4::print_vector(std::string table)
 {
 
@@ -144,3 +143,15 @@ void RC4::print_vector(std::string table)
     }
 }
 
+std::string RC4::Encrypt(std::string &seed_key, std::string &plainText){
+    std::vector<int> seedkey = str_to_vec(seed_key);
+    std::vector<int> plaintext = str_to_vec(plainText);
+    std::vector<int> cipher = Encrypt(seedkey, plaintext);
+    return vec_to_str(cipher);
+}
+std::string RC4::Decrypt(std::string &Seed_key, std::string &ciphertext){
+    std::vector<int> seedkey = str_to_vec(Seed_key);
+    std::vector<int> cipherText = str_to_vec(ciphertext);
+    std::vector<int> plain = Decrypt(seedkey, cipherText);
+    return vec_to_str(plain);
+}

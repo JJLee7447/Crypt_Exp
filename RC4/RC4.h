@@ -100,4 +100,19 @@ public:
      */
     void print_vector(std::string table);
 
+    /**
+     * @brief en
+     * @param seed_key : str
+     * @param plainText : str
+     * @return cipherText : str
+    */
+
+    std::string Encrypt(std::string &seed_key, std::string &plainText);
+    /**
+     * @brief de
+     * @param seed_key : str
+     * @param cipherText : str
+     * @return plainText : str
+    */
+    std::string Decrypt(std::string &Seed_key, std::string &ciphertext);
 };

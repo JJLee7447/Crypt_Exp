@@ -24,8 +24,21 @@ void test()
     print_vec(ciphertext, "ciphertext");
     print_vec(de_plain, "de_plaintext");
 }
+void test1(){
+    RC4 r;
+    std::string plain = "hello world 哈哈哈";
+    std::string seed_key = "12345";
+    std::string cipher = r.Encrypt(seed_key, plain);
+    std::string de_plain = r.Decrypt(seed_key, cipher);
+    std::cout << "plain text : " << plain << std::endl;
+
+    std::cout << "cipher text : " << cipher << std::endl;
+
+    std::cout << "de plain text : " << de_plain << std::endl;
+    
+}
 
 int main()
 {
-    test();
+    test1();
 }
